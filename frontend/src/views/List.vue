@@ -1,88 +1,74 @@
 <template>
-  <div class="list">
-    <div class="container">
-      <div class="row">
-        <div class="col-6 my-3">
-          <form method="post" @submit.prevent="listSubmit">
-            <input v-model="inputData" type="text" placeholder="Input Your Item" class="form-control">
-            <select v-model="inputColor" name="" id="" class="form-control mt-3">
-              <option value="">--Select Color--</option>
-              <option value="bg-danger">Red</option>
-              <option value="bg-success">Green</option>
-              <option value="bg-warning">Yellow</option>
-            </select>
-            <button type="submit" class="btn btn-success mt-3">Submit</button>
-          </form>
+    <div class="list">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 my-3 offset-3">
+                    <form class="card card-body shadow-lg" method="post" @submit.prevent="listSubmit">
+                        <h5>Accordion List Form</h5>
+                        <div class="form-group">
+                            <input v-model="title" :class="{ 'is-invalid' : title === '' && show }" type="text" placeholder="Input Your Title" class="form-control mb-2">
+                            <textarea v-model="description" :class="{'is-invalid' : description === '' && show}" class="form-control mb-2" placeholder="Input Your Description..."></textarea>
+                            <div class="form-group row">
+                                <label for="color" class="col-sm-2 col-form-label">Color : </label>
+                                <div class="col-sm-10 mt-2">
+                                    <input v-model='color' type="color" class="" id="color" >
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="col-6"></div>
-        <div class="col-6">
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center"  :class="list.bgColor" v-for=" (list, index ) in lists" :key="index" >
-              <span class="w-100" @click="listAdd(list.listName, list.bgColor)" >{{ list.listName }}</span>
-              <span @click="removeList(index)" class="badge badge-primary badge-pill">X</span>
-            </li>
-          </ul>
-        </div>
-        <div class="col-6">
-          <ul class="list-group">
-            <li v-if="show" class="list-group-item" :class="showColor">{{ showData }}</li>
-          </ul>
-        </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'List',
-  components: {
+    name: 'List',
 
-  },
-
-  data(){
-    return{
-      lists : [
-
-      ],
-      showData : '',
-      showColor: '',
-      show: false,
-      inputData: '',
-      inputColor: ''
-    }
-  },
-
-  methods:{
-    listSubmit(){
-      if(this.inputData !== ''){
-        this.lists.push({
-          'listName' : this.inputData,
-          'bgColor' : this.inputColor
-        })
-      }else{
-        alert('Field Empty')
-      }
-      this.inputData = ''
-      this.inputColor = ''
+    data() {
+        return {
+            title: '',
+            description: '',
+            color: '',
+            show: false
+        }
     },
-    removeList(index){
-      this. lists.splice(index, 1)
 
+    methods: {
+        listSubmit() {
+            if(this.title !== '' && this.description !== ''){
+                this.$axios.post('blog-create',{
+                    title: this.title,
+                    description: this.description,
+                    color: this.color,
+                })
+                .then(
+                    this.title = '',
+                    this.description = '',
+                    this.color = '',
+                    this.show = false
+                );
+            }else{
+                this.show = true
+            }
+        },
     },
-    listAdd(index, bgColor){
-      this.show = true
-      this.showData = index;
-      this.showColor = bgColor;
+
+    mounted() {
+        if(!this.$loginUser.user){
+            alert('Hello Coder...!!')
+            this.$router.push('/')
+        }
     }
-  }
 
 
 }
 </script>
 
 <style>
-  ul li{
+ul li {
     cursor: pointer;
-  }
+}
 </style>

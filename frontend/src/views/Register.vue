@@ -72,18 +72,16 @@ export default {
   methods:{
     handleSubmit(){
       this.$axios.post('register', {
-        name: this.fullName,
+          name: this.fullName,
           email: this.email,
           password: this.password,
           password_confirmation: this.password_confirm,
       })
-      .then(response => {
-        console.log(response);
+      .then(
         this.$router.push('/login')
-      })
+      )
       .catch(error => {
         alert(error.response.data.message)
-        console.log(error.response.data.message)
       });
     },
 

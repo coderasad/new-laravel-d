@@ -3,7 +3,8 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1>This is Home Page</h1>
+          <span v-if="show" class="bg-warning d-block display-5 p-3 text-center">Please Create list</span>
+          <span v-else class="bg-warning d-block display-5 p-3 text-center">Login first then make a list </span>
         </div>
       </div>
     </div>
@@ -12,9 +13,16 @@
 
 <script>
 export default {
-  name: 'Home',
-  components: {
+    name: 'Home',
+    data(){
+        return{
+            show : true
+        }
+    },
 
-  }
+    mounted() {
+        this.show = !!this.$loginUser.user;
+    }
+
 }
 </script>

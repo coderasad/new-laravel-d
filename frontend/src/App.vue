@@ -9,10 +9,10 @@
               <li class="nav-item active">
                   <router-link to="/" class="nav-link">Home</router-link>
               </li>
-              <li class="nav-item">
+              <li v-if="hide" class="nav-item">
                   <router-link to="/list" class="nav-link">List</router-link>
               </li>
-              <li class="nav-item">
+              <li v-if="hide" class="nav-item">
                   <router-link to="/accordion" class="nav-link">Accordion</router-link>
               </li>
             </ul>
@@ -43,24 +43,27 @@
   export default {
     data() {
       return {
-        show: true
+          show: true,
+          hide: false
+
       }
     },
     methods: {
       logOut() {
-        localStorage.removeItem('user');
-        this.$router.push('/login');
-        this.show = true
+          localStorage.removeItem('user');
+          this.$router.push('/login');
+          this.show = true;
+          this.hide = false
       }
     },
     mounted() {
-      if(this.$loginUser.user){
-        console.log("if", this.$loginUser.user);
-        this.show = false
-      }else{
-        console.log("elseif", this.$loginUser.user);
-        this.show = true
-      }
+        if(this.$loginUser.user){
+            this.show = false;
+            this.hide = true
+        }else{
+            this.show = true;
+            this.hide = false
+        }
     }
 
 
