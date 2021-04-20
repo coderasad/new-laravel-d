@@ -13,7 +13,7 @@
                                         data-bs-toggle="collapse"
                                         :data-bs-target="'#collapseOne'  + blog.id" aria-expanded="true"
                                         :aria-controls="'collapseOne'  + blog.id">
-                                    {{ blog.title }}<span v-if="show2 === 1">Test show</span>
+                                    {{ blog.title }}
                                 </button>
                             </h2>
                             <div :id="'collapseOne' + blog.id" class="accordion-collapse collapse"
@@ -39,28 +39,17 @@ export default {
 
     data() {
         return {
-            blogs: [],
-            bgColor: '',
-            test: 'accordion-button:not(.collapsed)',
-            show: true,
-            show2: 0,
+            blogs    : [],
+            bgColor  : '',
+            show     : true,
             className: '',
-            ami: ''
         }
     },
 
     methods: {
         handleClass(index) {
             this.className = 'test' + index
-            this.show = false
-            // this.show2 = 1
-            if(this.show2 === 1){
-                this.show2 = 0
-            }else{
-                this.show2 = 1
-            }
-            this.ami = this.className+this.show2
-            console.log('show2', this.ami)
+            this.show      = false
         }
     },
 
@@ -68,14 +57,20 @@ export default {
         this.$axios.get('/blog-show')
             .then(response => (this.blogs = response.data.blog));
 
+        if(localStorage.getItem('user')){
+            this.loginUser = (JSON.parse(localStorage.getItem('user')));
+            if(this.loginUser.user == ""){
+                this.$router.push('/login');
+            }
+        }
+        // if (!this.$loginUser.user) {
+        //     this.$router.push('/login')
+        // }
     }
 }
 </script>
 
 <style>
-.accordion-button:focus {
-
-}
 
 .accordion-button:not(.collapsed) {
     background: #fff;

@@ -7,11 +7,16 @@ import axios from "axios"
 
 
 Vue.prototype.$axios = axios
-if(localStorage.getItem('user')){
-  Vue.prototype.$loginUser=JSON.parse(localStorage.getItem('user'));
-}else {
-  Vue.prototype.$loginUser = {};
-}
+
+
+
+// if(localStorage.getItem('user')){
+//     console.log(1)
+//   Vue.prototype.$loginUser=JSON.parse(localStorage.getItem('user'));
+// }else {
+//     console.log(2)
+//   Vue.prototype.$loginUser = {};
+// }
 
 Vue.config.productionTip = false
 

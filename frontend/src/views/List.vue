@@ -7,7 +7,7 @@
                         <h5>Accordion List Form</h5>
                         <div class="form-group">
                             <input v-model="title" :class="{ 'is-invalid' : title === '' && show }" type="text" placeholder="Input Your Title" class="form-control mb-2">
-                            <textarea v-model="description" :class="{'is-invalid' : description === '' && show}" class="form-control mb-2" placeholder="Input Your Description..."></textarea>
+                            <textarea v-model="description" :class="{'is-invalid' : description === '' && show}" class="form-control mb-2" rows="4" placeholder="Input Your Description..." ></textarea>
                             <div class="form-group row">
                                 <label for="color" class="col-sm-2 col-form-label">Color : </label>
                                 <div class="col-sm-10 mt-2">
@@ -32,7 +32,8 @@ export default {
             title: '',
             description: '',
             color: '',
-            show: false
+            show: false,
+            loginUser:{}
         }
     },
 
@@ -45,6 +46,7 @@ export default {
                     color: this.color,
                 })
                 .then(
+                    this.$router.push('/accordion'),
                     this.title = '',
                     this.description = '',
                     this.color = '',
@@ -57,10 +59,14 @@ export default {
     },
 
     mounted() {
-        if(!this.$loginUser.user){
-            alert('Hello Coder...!!')
-            this.$router.push('/')
+        if(! localStorage.getItem('user')){
+            this.$router.push('/login')
         }
+
+
+        // if(!this.$loginUser.user){
+        //     this.$router.push('/')
+        // }
     }
 
 

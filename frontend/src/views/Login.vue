@@ -3,11 +3,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-
-                    <div v-if="show" class="alert alert-danger alert-ar" role="alert">
-                        Email or Password <a href="#" class="alert-link">Error</a>.
-                    </div>
-
                     <div class="card">
                         <div class="card-header">Login</div>
 
@@ -45,31 +40,41 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: 'Login',
     data() {
         return {
-            email: '',
-            password: '',
+            email        : '',
+            password     : '',
             loginErrorMsg: null,
-            show: false,
+            loginUser:{}
         }
     },
 
     methods: {
-        async handleLogin() {
-            const response = await this.$axios.post('login', {
-                email: this.email,
+        handleLogin() {
+            axios.post('login', {
+                email   : this.email,
                 password: this.password
-            });
-            this.loginErrorMsg = response.data.message;
-
-            if (!this.loginErrorMsg) {
-                localStorage.setItem('user', JSON.stringify(response.data));
+            }).then(response => {
+                this.loginErrorMsg = response.data.message;
+                if (!this.loginErrorMsg) {
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                    this.$router.push('/');
+                    this.$parent.$refs.navBar.showLoginButton = false;
+                }
+            }).catch(error => {
+                console.error(error);
+            }).finally(() => {});
+        }
+    },
+    mounted() {
+        if(localStorage.getItem('user')){
+            this.loginUser = (JSON.parse(localStorage.getItem('user')));
+            if(this.loginUser.user !== ""){
                 this.$router.push('/');
-
-            } else {
-                this.show = true
             }
         }
     }
