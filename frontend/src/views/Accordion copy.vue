@@ -8,8 +8,8 @@
 
                         <div v-for="(blog, index) in blogs" :key="index" class="accordion-item">
                             <h2 class="accordion-header" :id="'headingOne' + blog.id">
-                                <button @click="active = index, show=false" class="accordion-button" type="button"
-                                        :style="[active === index ? {background:blog.color}: '', index === 0 && show ? {background:blog.color}: '']"
+                                <button @click="handleClass(blog.id)" class="accordion-button" type="button"
+                                        :style="['test' + blog.id === className ? {background:blog.color}: '', index === 0 && show ? {background:blog.color}: '']"
                                         data-bs-toggle="collapse"
                                         :data-bs-target="'#collapseOne'  + blog.id" aria-expanded="true"
                                         :aria-controls="'collapseOne'  + blog.id">
@@ -43,8 +43,14 @@ export default {
             bgColor  : '',
             show     : true,
             className: '',
-            active: 0
+            
+        }
+    },
 
+    methods: {
+        handleClass(index) {
+            this.className = 'test' + index
+            this.show      = false
         }
     },
 
